@@ -1,6 +1,9 @@
 package dao
 
-import "message-board/model"
+import (
+	"fmt"
+	"message-board/model"
+)
 
 func UpdatePassword(username, newPassword string) error {
 	_, err := dB.Exec("UPDATE user SET password = ? WHERE username = ?", newPassword, username)
@@ -9,6 +12,13 @@ func UpdatePassword(username, newPassword string) error {
 
 func SelectUserByUsername(username string) (model.User, error) {
 	user := model.User{}
+
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("服务器出错")
+			return
+		}
+	}()
 
 	row := dB.QueryRow("SELECT id,password FROM user WHERE username = ?", username)
 	if row.Err() != nil {

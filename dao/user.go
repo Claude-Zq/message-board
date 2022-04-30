@@ -1,6 +1,8 @@
 package dao
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"message-board/model"
 )
@@ -34,4 +36,22 @@ func SelectUserByUsername(username string) (model.User, error) {
 func InsertUser(user model.User) error {
 	_, err := dB.Exec("INSERT INTO user(username,password) values(?,?)", user.Username, user.Password)
 	return err
+}
+
+func GetQuestionByUsername(username string) (string, error) {
+	var questionNull sql.NullString
+	row := dB.QueryRow("SELECT question FROM user WHERE username = ?", username)
+	if row.Err() != nil {
+		return questionNull.String, row.Err()
+	}
+	err := row.Scan(&questionNull)
+	if err != nil {
+		return questionNull.String, err
+	}
+	//密保问题不为空
+	if questionNull.Valid {
+		return questionNull.String, nil
+	} else {
+		return questionNull.String, errors.New("密保问题不存在")
+	}
 }

@@ -3,6 +3,7 @@ package service
 import (
 	"database/sql"
 	"message-board/dao"
+	"message-board/model"
 )
 
 //按用户名修改密码
@@ -25,4 +26,9 @@ func IsPasswordCorrect(username, password string) (bool, error) {
 		return false, nil
 	}
 	return true, nil
+}
+
+func Register(user model.User) error {
+	err := dao.InsertUser(user)
+	return err
 }

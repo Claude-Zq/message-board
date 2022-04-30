@@ -32,3 +32,14 @@ func Register(user model.User) error {
 	err := dao.InsertUser(user)
 	return err
 }
+
+func IsRepeatUsername(username string) (bool, error) {
+	_, err := dao.SelectUserByUsername(username)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return false, nil
+		}
+		return false, err
+	}
+	return true, nil
+}

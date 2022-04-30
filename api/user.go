@@ -80,3 +80,17 @@ func register(ctx *gin.Context) {
 	tool.RespSuccessful(ctx)
 
 }
+
+func GetQuestion(ctx *gin.Context) {
+	username := ctx.Param("username")
+	if question, err := service.GetQuestionByName(username); err != nil {
+		if err.Error() == "密保问题不存在" {
+			tool.RespErrorWithData(ctx, "密保问题不存在")
+		}
+		fmt.Println("GetQuestion err:", err)
+		tool.RespInternalError(ctx)
+		return
+	} else {
+		tool.ResSuccessfulWithData(ctx, question)
+	}
+}

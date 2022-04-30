@@ -3,9 +3,9 @@ package api
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"message-board/model"
 	"message-board/service"
 	"message-board/tool"
-	"net/http"
 )
 
 func changePassword(ctx *gin.Context) {
@@ -53,5 +53,30 @@ func login(ctx *gin.Context) {
 }
 
 func register(ctx *gin.Context) {
-	ctx.String(http.StatusOK, "用户注册")
+	username := ctx.PostForm("username")
+	password := ctx.PostForm("password")
+
+	user := model.User{
+		Username: username,
+		Password: password,
+	}
+	flag, err := service.IsRepeatUsername(username)
+	if err != nil {
+		fmt.Println("judge repeat username err:", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+
+	if flag {
+		tool.RespErrorWithData(ctx, "用户名已存在")
+		return
+	}
+	err = service.Register(user)
+	if err != nil {
+		fmt.Println("register err:", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+	tool.RespSuccessful(ctx)
+
 }

@@ -6,6 +6,7 @@ import (
 	"message-board/model"
 	"message-board/service"
 	"message-board/tool"
+	"net/http"
 )
 
 func changePassword(ctx *gin.Context) {
@@ -81,16 +82,19 @@ func register(ctx *gin.Context) {
 
 }
 
-func GetQuestion(ctx *gin.Context) {
-	username := ctx.Param("username")
+func getQuestion(ctx *gin.Context) {
+	username := ctx.Query("username")
 	if question, err := service.GetQuestionByName(username); err != nil {
 		if err.Error() == "密保问题不存在" {
 			tool.RespErrorWithData(ctx, "密保问题不存在")
+			return
 		}
-		fmt.Println("GetQuestion err:", err)
+		fmt.Println("getQuestion err:", err)
 		tool.RespInternalError(ctx)
 		return
 	} else {
-		tool.ResSuccessfulWithData(ctx, question)
+		ctx.JSON(http.StatusOK, gin.H{
+			"question": question,
+		})
 	}
 }

@@ -5,9 +5,10 @@ import (
 	"message-board/dao"
 )
 
+//按用户名修改密码
 func ChangePassword(username, newPassword string) error {
-
-	return nil
+	err := dao.UpdatePassword(username, newPassword)
+	return err
 
 }
 

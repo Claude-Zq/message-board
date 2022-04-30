@@ -8,13 +8,13 @@ import (
 func InitEngine() {
 	engine := gin.Default()
 
-	//engine.POST("/register",register)//注册
-	//engine.POST("/login",login)//登陆
+	engine.POST("/register", register) //注册
+	engine.POST("/login", login)       //登陆
 
 	userGroup := engine.Group("/user")
 	{
 		//userGroup.Use(auth)
-		userGroup.POST("/password" /*,changePassword*/) //修改密码
+		userGroup.POST("/password", changePassword) //修改密码
 	}
 	postGroup := engine.Group("/post")
 	{

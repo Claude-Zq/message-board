@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func postDetail(ctx *gin.Context) {
@@ -15,13 +16,16 @@ func postDetail(ctx *gin.Context) {
 	//
 	////根据postId拿到post
 	//post,err :=
+	ctx.String(http.StatusOK, "留言详情")
 	return
 }
 
 func briefPosts(ctx *gin.Context) {
+	ctx.String(http.StatusOK, "留言概略")
 	return
 }
 
 func addPost(ctx *gin.Context) {
+	ctx.String(http.StatusOK, "添加留言")
 	return
 }

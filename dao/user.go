@@ -38,6 +38,8 @@ func InsertUser(user model.User) error {
 	return err
 }
 
+var ErrNoQuestion = errors.New("dao: This user has no question")
+
 func GetQuestionByUsername(username string) (string, error) {
 	var questionNull sql.NullString
 	row := dB.QueryRow("SELECT question FROM user WHERE username = ?", username)
@@ -52,6 +54,6 @@ func GetQuestionByUsername(username string) (string, error) {
 	if questionNull.Valid {
 		return questionNull.String, nil
 	} else {
-		return questionNull.String, errors.New("密保问题不存在")
+		return questionNull.String, ErrNoQuestion
 	}
 }

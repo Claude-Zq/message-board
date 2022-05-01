@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"message-board/dao"
 	"message-board/model"
 	"message-board/service"
 	"message-board/tool"
@@ -85,7 +86,7 @@ func register(ctx *gin.Context) {
 func getQuestion(ctx *gin.Context) {
 	username := ctx.Query("username")
 	if question, err := service.GetQuestionByName(username); err != nil {
-		if err.Error() == "密保问题不存在" {
+		if err == dao.ErrNoQuestion {
 			tool.RespErrorWithData(ctx, "密保问题不存在")
 			return
 		}

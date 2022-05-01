@@ -26,6 +26,6 @@ func RespSuccessful(ctx *gin.Context) {
 func ResSuccessfulWithData(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"info": "成功",
-		"data": "data",
+		"data": data,
 	})
 }

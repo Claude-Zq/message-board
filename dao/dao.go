@@ -16,6 +16,7 @@ func InitDB() {
 		panic(err)
 	}
 
+	db.SetMaxOpenConns(10000)
 	//检查数据库是否可用可访问
 	if err = db.Ping(); err != nil {
 		log.Fatal(err)

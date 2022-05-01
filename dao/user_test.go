@@ -5,6 +5,16 @@ import (
 	"testing"
 )
 
+func TestGetAnswerByUsername(t *testing.T) {
+	dao.InitDB()
+	question0, err0 := dao.GetAnswerByUsername("zhangsan")
+	t.Log(question0, err0)
+	question1, err1 := dao.GetAnswerByUsername("claude")
+	t.Log(question1, err1)
+	question2, err2 := dao.GetAnswerByUsername("ahhahha")
+	t.Log(question2, err2)
+}
+
 func TestGetQuestionByUsername(t *testing.T) {
 	dao.InitDB()
 	question0, err0 := dao.GetQuestionByUsername("zhangsan")

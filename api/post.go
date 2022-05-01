@@ -1,8 +1,13 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"message-board/model"
+	"message-board/service"
+	"message-board/tool"
 	"net/http"
+	"time"
 )
 
 func postDetail(ctx *gin.Context) {
@@ -26,6 +31,23 @@ func briefPosts(ctx *gin.Context) {
 }
 
 func addPost(ctx *gin.Context) {
-	ctx.String(http.StatusOK, "添加留言")
-	return
+	iUsername, _ := ctx.Get("username")
+	username := iUsername.(string)
+
+	txt := ctx.PostForm("txt")
+
+	post := model.Post{
+		Txt:        txt,
+		Username:   username,
+		PostTime:   time.Now(),
+		UpdateTime: time.Now(),
+	}
+	err := service.AddPost(post)
+	if err != nil {
+		fmt.Println("add post err:", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+	tool.RespSuccessful(ctx)
+
 }

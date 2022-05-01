@@ -6,7 +6,7 @@ import (
 )
 
 func TestGetQuestionByUsername(t *testing.T) {
-	dao.InitDB()g
+	dao.InitDB()
 	question0, err0 := dao.GetQuestionByUsername("zhangsan")
 	t.Log(question0, err0)
 	question1, err1 := dao.GetQuestionByUsername("claude")

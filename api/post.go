@@ -1,6 +1,7 @@
 package api
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"message-board/model"
@@ -21,11 +22,26 @@ func postDetail(ctx *gin.Context) {
 	//根据postId拿到post
 	post, err := service.GetPostById(postId)
 	if err != nil {
-		fmt.Println("get post by id err", err)
+		if err == sql.ErrNoRows {
+			tool.RespErrorWithData(ctx, "没有对应的留言")
+			return
+		}
+		fmt.Println("get post by id err:", err)
 		tool.RespInternalError(ctx)
 		return
 	}
-	tool.ResSuccessfulWithData(ctx, post)
+	//根据postId拿到对应comments
+	comments, err := service.GetPostComments(postId)
+	if err != nil {
+		fmt.Println("get comment by id err:", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+	postDetail := model.PostDetail{
+		Post:    post,
+		Comment: comments,
+	}
+	tool.ResSuccessfulWithData(ctx, postDetail)
 
 }
 

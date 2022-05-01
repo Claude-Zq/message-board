@@ -6,23 +6,27 @@ import (
 	"message-board/model"
 	"message-board/service"
 	"message-board/tool"
-	"net/http"
+	"strconv"
 	"time"
 )
 
 func postDetail(ctx *gin.Context) {
-	//postIdString := ctx.Param("post_id")
-	//postId, err := strconv.Atoi(postIdString)
-	//if err != nil {
-	//	fmt.Println("post id string to int err:", err)
-	//	tool.RespErrorWithDate(ctx,"post_id格式有误")
-	//	return
-	//}
-	//
-	////根据postId拿到post
-	//post,err :=
-	ctx.String(http.StatusOK, "留言详情")
-	return
+	postIdString := ctx.Param("post_id")
+	postId, err := strconv.Atoi(postIdString)
+	if err != nil {
+		fmt.Println("post_id string to int err:", err)
+		tool.RespErrorWithData(ctx, "post_id格式有误")
+		return
+	}
+	//根据postId拿到post
+	post, err := service.GetPostById(postId)
+	if err != nil {
+		fmt.Println("get post by id err", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+	tool.ResSuccessfulWithData(ctx, post)
+
 }
 
 func briefPosts(ctx *gin.Context) {

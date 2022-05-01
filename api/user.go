@@ -1,6 +1,7 @@
 package api
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"message-board/dao"
@@ -90,6 +91,10 @@ func getQuestion(ctx *gin.Context) {
 			tool.RespErrorWithData(ctx, "密保问题不存在")
 			return
 		}
+		if err == sql.ErrNoRows {
+			tool.RespErrorWithData(ctx, "用户不存在")
+			return
+		}
 		fmt.Println("getQuestion err:", err)
 		tool.RespInternalError(ctx)
 		return
@@ -98,4 +103,31 @@ func getQuestion(ctx *gin.Context) {
 			"question": question,
 		})
 	}
+}
+
+func judgeAnswer(ctx *gin.Context) {
+	username := ctx.PostForm("username")
+	answer := ctx.PostForm("answer")
+
+	flag, err := service.IsCorrectAnswer(username, answer)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			tool.RespErrorWithData(ctx, "用户不存在")
+			return
+		}
+		if err == dao.ErrNoAnswer {
+			tool.RespErrorWithData(ctx, "密保答案不存在")
+			return
+		}
+		fmt.Println("judge answer err:", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+	if flag {
+		tool.RespSuccessful(ctx)
+	} else {
+		tool.RespErrorWithData(ctx, "答案错误")
+	}
+
 }

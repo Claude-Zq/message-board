@@ -57,3 +57,23 @@ func GetQuestionByUsername(username string) (string, error) {
 		return questionNull.String, ErrNoQuestion
 	}
 }
+
+var ErrNoAnswer = errors.New("dao: This question has no answer")
+
+func GetAnswerByUsername(username string) (string, error) {
+	var answer string
+	row := dB.QueryRow("SELECT COALESCE(answer,'') FROM user WHERE username = ?", username)
+	if row.Err() != nil {
+		return "", row.Err()
+	}
+	err := row.Scan(&answer)
+	if err != nil {
+		return "", err
+	}
+	if answer == "" {
+		return "", ErrNoAnswer
+	} else {
+		return answer, nil
+	}
+
+}

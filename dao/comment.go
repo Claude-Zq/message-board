@@ -18,7 +18,6 @@ func SelectCommentByPostId(postId int) ([]model.Comment, error) {
 		return nil, err
 	}
 	defer rows.Close()
-	
 	for rows.Next() {
 		var comment model.Comment
 		err = rows.Scan(&comment.Id, &comment.PostId, &comment.Username, &comment.Txt, &comment.CommentTime)
@@ -28,4 +27,9 @@ func SelectCommentByPostId(postId int) ([]model.Comment, error) {
 		comments = append(comments, comment)
 	}
 	return comments, nil
+}
+
+func DeleteCommentById(id int) error {
+	_, err := dB.Exec("DELETE FROM comment WHERE id = ?", id)
+	return err
 }

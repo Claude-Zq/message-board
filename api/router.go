@@ -10,6 +10,7 @@ func InitEngine() {
 	engine.POST("/register", register)   //注册
 	engine.POST("/login", login)         //登陆
 	engine.GET("/question", getQuestion) //获取密保问题
+	engine.POST("/answer", judgeAnswer)  //判断密保问题
 
 	userGroup := engine.Group("/user")
 	{

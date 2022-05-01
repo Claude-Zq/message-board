@@ -41,3 +41,11 @@ func TestDeleteCommentById(t *testing.T) {
 		t.Log(err)
 	}
 }
+
+func TestUpdateCommentByCommentId(t *testing.T) {
+	dao.InitDB()
+	err := dao.UpdateCommentByCommentId(5, "新评论")
+	if err != nil {
+		t.Log(err)
+	}
+}

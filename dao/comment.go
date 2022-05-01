@@ -34,14 +34,29 @@ func SelectCommentByPostId(postId int) ([]model.Comment, error) {
 	return comments, nil
 }
 
-func DeleteCommentById(id int) error {
-	ret, err := dB.Exec("DELETE FROM comment WHERE id = ?", id)
+func DeleteCommentById(commentId int) error {
+	ret, err := dB.Exec("DELETE FROM comment WHERE id = ?", commentId)
 	if err != nil {
 		return err
 	}
 	n, err := ret.RowsAffected()
 	if err != nil {
 		return err
+	}
+	if n == 0 {
+		return ErrCommentNotExist
+	}
+	return nil
+}
+
+func UpdateCommentByCommentId(commentId int, newTxt string) error {
+	ret, err := dB.Exec("UPDATE comment SET txt = ? WHERE id = ?", newTxt, commentId)
+	if err != nil {
+		return err
+	}
+	n, err := ret.RowsAffected()
+	if err != nil {
+		return errors.New("dao:get rowsAffected err")
 	}
 	if n == 0 {
 		return ErrCommentNotExist

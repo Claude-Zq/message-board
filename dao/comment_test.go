@@ -20,3 +20,16 @@ func TestInsertComment(t *testing.T) {
 		t.Log(err)
 	}
 }
+
+func TestSelectCommentByPostId(t *testing.T) {
+	dao.InitDB()
+	comments, err := dao.SelectCommentByPostId(2)
+	if err != nil {
+		t.Log(err)
+		return
+	}
+	for _, comment := range comments {
+		t.Log(comment)
+	}
+
+}

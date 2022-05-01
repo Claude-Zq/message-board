@@ -9,8 +9,3 @@ type Comment struct {
 	Username    string
 	CommentTime time.Time
 }
-
-type PostDetail struct {
-	Post
-	Comment []Comment
-}

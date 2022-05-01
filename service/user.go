@@ -47,3 +47,13 @@ func IsRepeatUsername(username string) (bool, error) {
 func GetQuestionByName(username string) (string, error) {
 	return dao.GetQuestionByUsername(username)
 }
+func IsCorrectAnswer(username, answer string) (bool, error) {
+	correctAnswer, err := dao.GetAnswerByUsername(username)
+	if err != nil {
+		return false, err
+	}
+	if correctAnswer != answer {
+		return false, err
+	}
+	return true, err
+}

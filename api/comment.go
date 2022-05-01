@@ -59,3 +59,24 @@ func deleteComment(ctx *gin.Context) {
 	}
 	tool.ResSuccessfulWithData(ctx, "删除成功")
 }
+
+func updateComment(ctx *gin.Context) {
+	commentIdString := ctx.PostForm("comment_id")
+	newTxt := ctx.PostForm("new_txt")
+
+	commentId, err := strconv.Atoi(commentIdString)
+	if err != nil {
+		fmt.Println("comment_id  string to int err:", err)
+		tool.RespErrorWithData(ctx, "comment_id格式有误")
+		return
+	}
+
+	err = service.UpdateComment(commentId, newTxt)
+	if err != nil {
+		fmt.Println("update comment err:", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+	tool.ResSuccessfulWithData(ctx, "修改评论成功")
+
+}

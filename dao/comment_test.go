@@ -33,3 +33,11 @@ func TestSelectCommentByPostId(t *testing.T) {
 	}
 
 }
+
+func TestDeleteCommentById(t *testing.T) {
+	dao.InitDB()
+	err := dao.DeleteCommentById(10)
+	if err != nil {
+		t.Log(err)
+	}
+}

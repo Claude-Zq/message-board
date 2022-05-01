@@ -26,8 +26,13 @@ func postDetail(ctx *gin.Context) {
 }
 
 func briefPosts(ctx *gin.Context) {
-	ctx.String(http.StatusOK, "留言概略")
-	return
+	posts, err := service.GetPosts()
+	if err != nil {
+		fmt.Println("get posts err:", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+	tool.ResSuccessfulWithData(ctx, posts)
 }
 
 func addPost(ctx *gin.Context) {

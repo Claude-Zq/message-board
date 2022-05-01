@@ -5,9 +5,9 @@ import (
 	"net/http"
 )
 
-func RespErrorWithDate(ctx *gin.Context, date interface{}) {
+func RespErrorWithData(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusOK, gin.H{
-		"info": date,
+		"info": data,
 	})
 }
 
@@ -23,7 +23,7 @@ func RespSuccessful(ctx *gin.Context) {
 	})
 }
 
-func ResSuccessfulWithDate(ctx *gin.Context, date interface{}) {
+func ResSuccessfulWithData(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"info": "成功",
 		"data": "data",

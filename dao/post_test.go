@@ -30,3 +30,14 @@ func TestInsertPost(t *testing.T) {
 		return
 	}
 }
+
+func TestSelectPosts(t *testing.T) {
+	dao.InitDB()
+	posts, err := dao.SelectPosts()
+	if err != nil {
+		t.Log(err)
+	}
+	for _, post := range posts {
+		fmt.Println(post)
+	}
+}

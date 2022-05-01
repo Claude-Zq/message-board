@@ -1,6 +1,11 @@
 package dao
 
-import "message-board/model"
+import (
+	"errors"
+	"message-board/model"
+)
+
+var ErrCommentNotExist = errors.New("评论不存在")
 
 func InsertComment(comment model.Comment) error {
 	_, err := dB.Exec("INSERT INTO comment(post_id,username,comment_time,txt) VALUES(?,?,?,?)", comment.PostId, comment.Username, comment.CommentTime, comment.Txt)
@@ -30,6 +35,16 @@ func SelectCommentByPostId(postId int) ([]model.Comment, error) {
 }
 
 func DeleteCommentById(id int) error {
-	_, err := dB.Exec("DELETE FROM comment WHERE id = ?", id)
-	return err
+	ret, err := dB.Exec("DELETE FROM comment WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
+	n, err := ret.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if n == 0 {
+		return ErrCommentNotExist
+	}
+	return nil
 }

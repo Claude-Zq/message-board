@@ -33,3 +33,11 @@ func DeletePost(postId int) error {
 func UpdatePost(postId int, newTxt string) error {
 	return dao.UpdatePostTxt(postId, newTxt)
 }
+
+func Like(postId int) error {
+	return dao.AddLike(postId)
+}
+
+func CancelLike(postId int) error {
+	return dao.DeleteLike(postId)
+}

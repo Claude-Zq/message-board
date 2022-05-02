@@ -49,3 +49,11 @@ func TestDeletePost(t *testing.T) {
 		t.Log(err)
 	}
 }
+
+func TestUpdatePostTxt(t *testing.T) {
+	dao.InitDB()
+	err := dao.UpdatePostTxt(6, "更新后的留言")
+	if err != nil {
+		t.Log(err)
+	}
+}

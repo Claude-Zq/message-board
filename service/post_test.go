@@ -51,3 +51,12 @@ func TestGetPostById(t *testing.T) {
 		t.Log(post)
 	}
 }
+
+func TestDeletePost(t *testing.T) {
+	dao.InitDB()
+	err := service.DeletePost(6)
+	if err != nil {
+		t.Log(err)
+	}
+
+}

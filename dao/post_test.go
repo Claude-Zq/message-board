@@ -41,3 +41,11 @@ func TestSelectPosts(t *testing.T) {
 		fmt.Println(post)
 	}
 }
+
+func TestDeletePost(t *testing.T) {
+	dao.InitDB()
+	err := dao.DeletePost(7)
+	if err != nil {
+		t.Log(err)
+	}
+}

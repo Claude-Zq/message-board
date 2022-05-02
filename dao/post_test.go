@@ -65,3 +65,23 @@ func TestUpdatePostCommentNum(t *testing.T) {
 		t.Log(err)
 	}
 }
+
+func TestAddLike(t *testing.T) {
+	dao.InitDB()
+	for i := 0; i < 100; i++ {
+		err := dao.AddLike(i)
+		if err != nil {
+			t.Log(err)
+		}
+	}
+}
+
+func TestDeleteLike(t *testing.T) {
+	dao.InitDB()
+	for i := 0; i < 100; i++ {
+		err := dao.DeleteLike(i)
+		if err != nil {
+			t.Log(err)
+		}
+	}
+}

@@ -5,6 +5,7 @@ import "time"
 type Post struct {
 	Id         int       `json:"id"`
 	CommentNum int       `json:"comment_num"`
+	LikeNum    int       `json:"like_num"`
 	Txt        string    `json:"txt"`
 	Username   string    `json:"username"`
 	PostTime   time.Time `json:"post_time"`

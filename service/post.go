@@ -29,3 +29,7 @@ func DeletePost(postId int) error {
 	}
 	return nil
 }
+
+func UpdatePost(postId int, newTxt string) error {
+	return dao.UpdateCommentByCommentId(postId, newTxt)
+}

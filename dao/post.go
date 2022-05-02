@@ -54,3 +54,8 @@ func UpdatePostTxt(postId int, newTxt string) error {
 	_, err := dB.Exec("UPDATE post SET txt = ? WHERE id = ?", newTxt, postId)
 	return err
 }
+
+func UpdatePostCommentNum(postId, newCommentNum int) error {
+	_, err := dB.Exec("UPDATE post SET comment_num = ? WHERE id = ?", newCommentNum, postId)
+	return err
+}

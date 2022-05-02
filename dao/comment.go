@@ -34,7 +34,7 @@ func SelectCommentByPostId(postId int) ([]model.Comment, error) {
 	return comments, nil
 }
 
-func DeleteCommentById(commentId int) error {
+func DeleteCommentByCommentId(commentId int) error {
 	ret, err := dB.Exec("DELETE FROM comment WHERE id = ?", commentId)
 	if err != nil {
 		return err
@@ -47,6 +47,11 @@ func DeleteCommentById(commentId int) error {
 		return ErrCommentNotExist
 	}
 	return nil
+}
+
+func DeleteCommentsByPostId(PostId int) error {
+	_, err := dB.Exec("DELETE FROM comment WHERE post_id = ?", PostId)
+	return err
 }
 
 func UpdateCommentByCommentId(commentId int, newTxt string) error {

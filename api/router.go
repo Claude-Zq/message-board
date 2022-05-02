@@ -20,9 +20,9 @@ func InitEngine() {
 	}
 	postGroup := engine.Group("/post")
 	{
-		postGroup.Use(auth)          //认证
-		postGroup.POST("/", addPost) //发布新留言
-		//postGroup.POST("/:post_id")  //修改留言
+		postGroup.Use(auth)                       //认证
+		postGroup.POST("/", addPost)              //发布新留言
+		postGroup.POST("/:post_id", updatePost)   //修改留言
 		postGroup.DELETE("/:post_id", deletePost) //删除留言
 
 		postGroup.GET("/", briefPosts)         //查看全部留言概略

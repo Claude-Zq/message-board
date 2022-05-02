@@ -92,3 +92,24 @@ func deletePost(ctx *gin.Context) {
 	}
 	tool.RespSuccessful(ctx)
 }
+
+func updatePost(ctx *gin.Context) {
+	postIdString := ctx.Param("post_id")
+	newTxt := ctx.PostForm("new_txt")
+	fmt.Println(postIdString, newTxt)
+
+	postId, err := strconv.Atoi(postIdString)
+	if err != nil {
+		fmt.Println("post_id string to int err:", err)
+		tool.RespErrorWithData(ctx, "post_id格式有误")
+		return
+	}
+	err = service.UpdatePost(postId, newTxt)
+	if err != nil {
+		fmt.Println("Update post err:", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+	tool.ResSuccessfulWithData(ctx, "修改成功")
+
+}

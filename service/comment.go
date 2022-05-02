@@ -14,7 +14,7 @@ func GetPostComments(postId int) ([]model.Comment, error) {
 }
 
 func DeleteComment(id int) error {
-	return dao.DeleteCommentById(id)
+	return dao.DeleteCommentByCommentId(id)
 }
 
 func UpdateComment(commentId int, newTxt string) error {

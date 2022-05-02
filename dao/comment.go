@@ -58,3 +58,18 @@ func UpdateCommentByCommentId(commentId int, newTxt string) error {
 	_, err := dB.Exec("UPDATE comment SET txt = ? WHERE id = ?", newTxt, commentId)
 	return err
 }
+
+func GetCommentByCommentId(commentId int) (model.Comment, error) {
+	var comment model.Comment
+	row := dB.QueryRow("SELECT id,post_id,username,txt,comment_time FROM comment WHERE id = ?", commentId)
+
+	if row.Err() != nil {
+		return comment, row.Err()
+	}
+	err := row.Scan(&comment.Id, &comment.PostId, &comment.Username, &comment.Txt, &comment.CommentTime)
+	if err != nil {
+		return comment, err
+	}
+	return comment, nil
+
+}

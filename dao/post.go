@@ -64,3 +64,8 @@ func AddLike(postId int) error {
 	_, err := dB.Exec("UPDATE post SET like_num = like_num + 1 WHERE id = ?", postId)
 	return err
 }
+
+func DeleteLike(postId int) error {
+	_, err := dB.Exec("UPDATE post SET like_num = like_num - 1 WHERE id = ?", postId)
+	return err
+}

@@ -27,6 +27,9 @@ func InitEngine() {
 
 		postGroup.GET("/", briefPosts)         //查看全部留言概略
 		postGroup.GET("/:post_id", postDetail) //查看一条留言详细信息和其下属评论
+
+		postGroup.POST("/like", like)         //点赞
+		postGroup.DELETE("/like", cancelLike) //取消点赞
 	}
 
 	commentGroup := engine.Group("/comment")

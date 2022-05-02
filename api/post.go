@@ -113,3 +113,38 @@ func updatePost(ctx *gin.Context) {
 	tool.ResSuccessfulWithData(ctx, "修改成功")
 
 }
+
+func like(ctx *gin.Context) {
+	postIdString := ctx.Query("post_id")
+	postId, err := strconv.Atoi(postIdString)
+	if err != nil {
+		fmt.Println("post_id string to int err:", err)
+		tool.RespErrorWithData(ctx, "post_id格式有误")
+		return
+	}
+	err = service.Like(postId)
+	if err != nil {
+		fmt.Println("AddLike to post err:", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+	tool.ResSuccessfulWithData(ctx, "点赞成功")
+
+}
+
+func cancelLike(ctx *gin.Context) {
+	postIdString := ctx.Query("post_id")
+	postId, err := strconv.Atoi(postIdString)
+	if err != nil {
+		fmt.Println("post_id string to int err:", err)
+		tool.RespErrorWithData(ctx, "post_id格式有误")
+		return
+	}
+	err = service.CancelLike(postId)
+	if err != nil {
+		fmt.Println("cancelLike to post err:", err)
+		tool.RespInternalError(ctx)
+		return
+	}
+	tool.ResSuccessfulWithData(ctx, "已取消点赞")
+}

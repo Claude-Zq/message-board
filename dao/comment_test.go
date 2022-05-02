@@ -57,3 +57,13 @@ func TestUpdateCommentByCommentId(t *testing.T) {
 		t.Log(err)
 	}
 }
+
+func TestGetCommentByCommentId(t *testing.T) {
+	dao.InitDB()
+	comment, err := dao.GetCommentByCommentId(19)
+	t.Log(comment)
+	if err != nil {
+		t.Log(err)
+	}
+
+}

@@ -52,7 +52,15 @@ func TestDeletePost(t *testing.T) {
 
 func TestUpdatePostTxt(t *testing.T) {
 	dao.InitDB()
-	err := dao.UpdatePostTxt(6, "更新后的留言")
+	err := dao.UpdatePostTxt(2, "测试dao层")
+	if err != nil {
+		t.Log(err)
+	}
+}
+
+func TestUpdatePostCommentNum(t *testing.T) {
+	dao.InitDB()
+	err := dao.UpdatePostCommentNum(1, 2)
 	if err != nil {
 		t.Log(err)
 	}

@@ -49,3 +49,8 @@ func DeletePost(postId int) error {
 	_, err := dB.Exec("DELETE FROM post WHERE id = ?", postId)
 	return err
 }
+
+func UpdatePostTxt(postId int, newTxt string) error {
+	_, err := dB.Exec("UPDATE post SET txt = ? WHERE id = ?", newTxt, postId)
+	return err
+}

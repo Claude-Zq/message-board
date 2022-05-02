@@ -59,3 +59,8 @@ func UpdatePostCommentNum(postId, newCommentNum int) error {
 	_, err := dB.Exec("UPDATE post SET comment_num = ? WHERE id = ?", newCommentNum, postId)
 	return err
 }
+
+func AddLike(postId int) error {
+	_, err := dB.Exec("UPDATE post SET like_num = like_num + 1 WHERE id = ?", postId)
+	return err
+}

@@ -17,3 +17,15 @@ func GetPosts() ([]model.Post, error) {
 func GetPostById(postId int) (model.Post, error) {
 	return dao.SelectPostById(postId)
 }
+
+func DeletePost(postId int) error {
+	err := dao.DeletePost(postId)
+	if err != nil {
+		return err
+	}
+	err = dao.DeleteCommentsByPostId(postId)
+	if err != nil {
+		return err
+	}
+	return nil
+}

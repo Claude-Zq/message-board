@@ -23,7 +23,24 @@ func GetPostComments(postId int) ([]model.Comment, error) {
 }
 
 func DeleteComment(id int) error {
-	return dao.DeleteCommentByCommentId(id)
+	//得到评论信息
+	comment, err := dao.GetCommentByCommentId(id)
+	if err != nil {
+		return err
+	}
+	//删除评论
+	err = dao.DeleteCommentByCommentId(id)
+	if err != nil {
+		return err
+	}
+
+	//更新对应留言的评论数
+	post, err := dao.SelectPostById(comment.PostId)
+	if err != nil {
+		return err
+	}
+	err = dao.UpdatePostCommentNum(comment.PostId, post.CommentNum-1)
+	return err
 }
 
 func UpdateComment(commentId int, newTxt string) error {

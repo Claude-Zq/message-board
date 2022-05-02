@@ -31,5 +31,5 @@ func DeletePost(postId int) error {
 }
 
 func UpdatePost(postId int, newTxt string) error {
-	return dao.UpdateCommentByCommentId(postId, newTxt)
+	return dao.UpdatePostTxt(postId, newTxt)
 }

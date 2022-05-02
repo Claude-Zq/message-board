@@ -36,7 +36,15 @@ func TestSelectCommentByPostId(t *testing.T) {
 
 func TestDeleteCommentById(t *testing.T) {
 	dao.InitDB()
-	err := dao.DeleteCommentById(10)
+	err := dao.DeleteCommentByCommentId(10)
+	if err != nil {
+		t.Log(err)
+	}
+}
+
+func TestDeleteCommentsByPostId(t *testing.T) {
+	dao.InitDB()
+	err := dao.DeleteCommentsByPostId(2)
 	if err != nil {
 		t.Log(err)
 	}
@@ -44,7 +52,7 @@ func TestDeleteCommentById(t *testing.T) {
 
 func TestUpdateCommentByCommentId(t *testing.T) {
 	dao.InitDB()
-	err := dao.UpdateCommentByCommentId(5, "新评论")
+	err := dao.UpdateCommentByCommentId(4, "99999")
 	if err != nil {
 		t.Log(err)
 	}

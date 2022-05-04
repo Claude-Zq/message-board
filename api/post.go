@@ -4,9 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"message-board/model"
 	"message-board/service"
 	"message-board/tool"
+	"os"
+	"path"
 	"strconv"
 	"time"
 )
@@ -147,4 +150,51 @@ func cancelLike(ctx *gin.Context) {
 		return
 	}
 	tool.ResSuccessfulWithData(ctx, "已取消点赞")
+}
+
+func uploadPicture(ctx *gin.Context) {
+	postIdString := ctx.PostForm("post_id")
+	_, err := strconv.Atoi(postIdString)
+	if err != nil {
+		fmt.Println("post_id string to int err:", err)
+		tool.RespErrorWithData(ctx, "post_id格式有误")
+		return
+	}
+
+	picture, err := ctx.FormFile("picture")
+	if err != nil {
+		tool.RespErrorWithData(ctx, "文件上传失败:"+err.Error())
+	}
+	//获取后缀名
+	extName := path.Ext(picture.Filename)
+	//判断后缀名是否合法
+	allowExtMap := map[string]bool{
+		".jpg":  true,
+		".png":  true,
+		".jpeg": true,
+		".gif":  true,
+	}
+	if _, ok := allowExtMap[extName]; !ok {
+		tool.RespErrorWithData(ctx, "不支持该图片格式,头像上传失败")
+		return
+	}
+
+	//创建文件保存目录(按留言编号创建)
+	dir := "./static/upload/" + postIdString
+	//判断文件夹是否已存在
+	if _, err := os.Stat(dir); err != nil {
+		if os.IsNotExist(err) /*不存在*/ {
+			if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+				fmt.Println("创建目录%s失败："+err.Error(), dir)
+				return
+			}
+		} else /*不确定是否存在*/ {
+			log.Printf("不能确定目录%s是否存在\n", dir)
+			return
+		}
+	}
+	dst := dir + "/" + picture.Filename
+	_ = ctx.SaveUploadedFile(picture, dst)
+	tool.ResSuccessfulWithData(ctx, "图片上传成功")
+
 }

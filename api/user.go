@@ -38,10 +38,15 @@ func changePassword(ctx *gin.Context) {
 }
 
 func login(ctx *gin.Context) {
-	username := ctx.PostForm("username")
-	password := ctx.PostForm("password")
+	var u model.Login
+	if err := ctx.ShouldBind(&u); err != nil {
+		tool.RespErrorWithData(ctx, err.Error())
+		return
+	}
+	//username := ctx.PostForm("username")
+	//password := ctx.PostForm("password")
 
-	flag, err := service.IsPasswordCorrect(username, password)
+	flag, err := service.IsPasswordCorrect(u.Username, u.Password)
 	if err != nil {
 		fmt.Println("judge password correct err:", err)
 		tool.RespInternalError(ctx)
@@ -51,19 +56,25 @@ func login(ctx *gin.Context) {
 		tool.RespErrorWithData(ctx, "密码错误")
 		return
 	}
-	ctx.SetCookie("username", username, 700, "/", "", false, false)
+	ctx.SetCookie("username", u.Username, 700, "/", "", false, false)
 	tool.RespSuccessful(ctx)
 }
 
 func register(ctx *gin.Context) {
-	username := ctx.PostForm("username")
-	password := ctx.PostForm("password")
+	var u model.Login
+	if err := ctx.ShouldBind(&u); err != nil {
+		tool.RespErrorWithData(ctx, err.Error())
+		return
+	}
+
+	//username := ctx.PostForm("username")
+	//password := ctx.PostForm("password")
 
 	user := model.User{
-		Username: username,
-		Password: password,
+		Username: u.Username,
+		Password: u.Password,
 	}
-	flag, err := service.IsRepeatUsername(username)
+	flag, err := service.IsRepeatUsername(u.Username)
 	if err != nil {
 		fmt.Println("judge repeat username err:", err)
 		tool.RespInternalError(ctx)
